@@ -57,7 +57,25 @@ npx ngrok http 3000
 ```
 Note the `https://xxxx.ngrok-free.app` URL — that plus `/vapi/tools` is your `WEBHOOK_URL` (e.g. `https://xxxx.ngrok-free.app/vapi/tools`).
 
-**For production**, deploy this folder to Render, Railway, Fly.io, or any small VPS instead of ngrok (ngrok URLs expire/change). Any of those is a `git push`-to-deploy flow — say the word if you want help setting one up.
+**For production**, deploy to Render (or Railway/Fly.io/a VPS) instead of ngrok — see the Render steps below.
+
+### Deploying to Render
+
+1. Push this repo to GitHub (already done: `github.com/psychologistmarium-cell/hospital-voice-agent`).
+2. [render.com](https://render.com) → sign up with GitHub → **New + → Web Service** → select the repo.
+3. Settings:
+   - **Root Directory:** leave blank
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+   - **Instance Type:** Free (for testing)
+4. **Environment** tab → add these variables:
+   - `GOOGLE_SERVICE_ACCOUNT_KEY_JSON` — open `service-account.json` in a text editor, copy the entire contents, paste as the value
+   - `GOOGLE_CALENDAR_ID`, `TIMEZONE`, `APPOINTMENT_DURATION_MINUTES`, `CLINIC_OPEN_HOUR`, `CLINIC_CLOSE_HOUR`, `CLINIC_WORKING_DAYS`, `VAPI_TOOL_SECRET` — copy each value straight from your local `.env`
+   - (`PORT` is set automatically by Render — don't add it yourself)
+5. Deploy. Render gives you a permanent URL like `https://hospital-voice-agent-backend.onrender.com`. Your webhook URL for Vapi is that plus `/vapi/tools`.
+6. Test it: `https://your-app.onrender.com/health` should return `{"ok":true}`.
+
+**Free-tier caveat:** Render's free web services spin down after 15 minutes idle and take ~30-50s to wake on the next request. That's fine for testing, but unacceptable for a live phone call (the caller would hang up waiting). Before going live, upgrade to Render's cheapest paid tier (~$7/mo) so it stays warm.
 
 ## 4. Fill in the hospital details
 
