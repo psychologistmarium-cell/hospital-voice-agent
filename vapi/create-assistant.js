@@ -115,10 +115,10 @@ const assistantPayload = {
   },
   transcriber: {
     provider: "soniox",
-    // Verify in dashboard: language/model field names for multilingual+Urdu
-    // may differ slightly from this. Soniox's real-time model auto-detects
-    // language and handles Urdu/English code-switching.
-    language: "multi",
+    // Vapi's schema wants a single primary language code (confirmed "ur" is
+    // valid). Soniox's own model still auto-detects code-switching within
+    // a call regardless of this hint -- verify in a live test call.
+    language: "ur",
   },
   voice: {
     provider: "azure",
