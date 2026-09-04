@@ -119,6 +119,8 @@ const assistantPayload = {
     // valid). Soniox's own model still auto-detects code-switching within
     // a call regardless of this hint -- verify in a live test call.
     language: "ur",
+    // Required by Vapi's Soniox integration -- must be stt-rt-v4 or stt-rt-v5.
+    model: "stt-rt-v5",
   },
   voice: {
     provider: "azure",
